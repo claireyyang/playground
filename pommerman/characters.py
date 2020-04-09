@@ -176,3 +176,13 @@ class Flame(object):
 
     def to_json(self):
         return {"position": self.position, "life": self.life}
+
+#TODO: need to implement directional moving for the Stag
+class Stag(object):
+    """Container for Stag"""
+
+    def __init__(self, position):
+        self.position=position
+
+    def to_json(self):
+        return{"position": self.position}

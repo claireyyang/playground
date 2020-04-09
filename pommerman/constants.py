@@ -5,18 +5,20 @@ This includes not just ints but also classes like Item, GameType, Action, etc.
 from enum import Enum
 
 RENDER_FPS = 15
-BOARD_SIZE = 11
-NUM_RIGID = 36
-NUM_WOOD = 36
-NUM_ITEMS = 20
+BOARD_SIZE = 5 # CHANGED THIS TO 5 FROM 11
+NUM_RIGID = 16  # CHANGED FROM 36
+NUM_WOOD = 0 # CHANGED FROM 36
+NUM_ITEMS = 0 # CHANGED FROM 20
+
 BOARD_SIZE_ONE_VS_ONE = 8
 NUM_RIGID_ONE_VS_ONE = 16
 NUM_WOOD_ONE_VS_ONE = 16
 NUM_ITEMS_ONE_VS_ONE = 10
-AGENT_VIEW_SIZE = 4
+
+AGENT_VIEW_SIZE = 5 # CHANGED FROM 4
 HUMAN_FACTOR = 32
-DEFAULT_BLAST_STRENGTH = 2
-DEFAULT_BOMB_LIFE = 9
+DEFAULT_BLAST_STRENGTH = 0 # CHANGED FROM 2
+DEFAULT_BOMB_LIFE = 1000 # CHANGED FROM 9 - it stays there forever
 # color for each of the 4 agents
 AGENT_COLORS = [[231, 76, 60], [46, 139, 87], [65, 105, 225], [238, 130, 238]]
 # color for each of the items.
@@ -38,9 +40,10 @@ FILE_NAMES = [
     'AgentDummy-No-Background', 'Agent0-No-Background', 'Agent1-No-Background',
     'Agent2-No-Background', 'Agent3-No-Background', 'X-No-Background',
     'Agent0-Team', 'Agent1-Team', 'Agent2-Team', 'Agent3-Team',
-    'Agent0-Team-No-Background', 'Agent1-Team-No-Background', 
+    'Agent0-Team-No-Background', 'Agent1-Team-No-Background',
     'Agent2-Team-No-Background', 'Agent3-Team-No-Background',
 ]
+
 IMAGES_DICT = {
     num: {
         'id': num,
@@ -83,20 +86,33 @@ class Item(Enum):
     AgentDummy is used by team games to denote the third enemy and by ffa to
     denote the teammate.
     """
+    # Passage = 0
+    # Rigid = 1
+    # Bomb = 2
+    # AgentDummy = 3
+    # Agent0 = 4
+    # Agent1 = 5
+    # Agent2 = 6
+    # Agent3 = 7
+    # Stag = 8
+    # Hare = 9
+
     Passage = 0
     Rigid = 1
-    Wood = 2
+    Wood = 2 # unused
     Bomb = 3
-    Flames = 4
-    Fog = 5
-    ExtraBomb = 6
-    IncrRange = 7
-    Kick = 8
+    Flames = 4  # unused
+    Fog = 5  # unused
+    ExtraBomb = 6  # unused
+    IncrRange = 7  # unused
+    Kick = 8  # unused
     AgentDummy = 9
     Agent0 = 10
     Agent1 = 11
     Agent2 = 12
     Agent3 = 13
+    Stag = 14
+    Hare = 15
 
 
 class GameType(Enum):
@@ -114,6 +130,7 @@ class GameType(Enum):
     TeamRadio = 3
     OneVsOne = 4
 
+    # WE WANT TEAM OR TEAM RADIO (BUT SO THAT EVERYONE HEARS THE COMMUNICATIONS)
 
 class Action(Enum):
     '''The Actions an agent can take'''
@@ -122,7 +139,7 @@ class Action(Enum):
     Down = 2
     Left = 3
     Right = 4
-    Bomb = 5
+    Bomb = 5 # DROP BOMB
 
 
 class Result(Enum):

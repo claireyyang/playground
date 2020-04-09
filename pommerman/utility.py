@@ -51,6 +51,8 @@ def make_board(size, num_rigid=0, num_wood=0, num_agents=4):
      8 - kick
      9 - skull
      10 - 13: agents
+     14: stag
+     15: hare
 
     Args:
       size: The dimension of the board, i.e. it's sizeXsize.
@@ -116,19 +118,19 @@ def make_board(size, num_rigid=0, num_wood=0, num_agents=4):
                 coordinates.remove((i, size - 2))
                 coordinates.remove((size - 2, i))
 
-        # Lay down wooden walls providing guaranteed passage to other agents.
-        wood = constants.Item.Wood.value
+        # Lay down RIGID walls providing guaranteed passage to other agents.
+        rigid = constants.Item.Rigid.value
         if num_agents == 4:
             for i in range(4, size - 4):
-                board[1, i] = wood
-                board[size - i - 1, 1] = wood
-                board[size - 2, size - i - 1] = wood
-                board[size - i - 1, size - 2] = wood
+                board[1, i] = rigid
+                board[size - i - 1, 1] = rigid
+                board[size - 2, size - i - 1] = rigid
+                board[size - i - 1, size - 2] = rigid
                 coordinates.remove((1, i))
                 coordinates.remove((size - i - 1, 1))
                 coordinates.remove((size - 2, size - i - 1))
                 coordinates.remove((size - i - 1, size - 2))
-                num_wood -= 4
+                num_rigid -= 4
 
         # Lay down the rigid walls.
         while num_rigid > 0:
@@ -140,15 +142,33 @@ def make_board(size, num_rigid=0, num_wood=0, num_agents=4):
             num_wood = lay_wall(constants.Item.Wood.value, num_wood,
                                 coordinates, board)
 
-        return board, agents
+        stag = []
+        hare = []
+        # Put down the stag and hare RANDOMLY ON ANY SPACE?
+        while True:
+            i = randint(1, size-1)
+            j = randint(1, size-1)
+            if board[i,j] == constants.Item.Passage.value:
+                board[i,j] = constants.Item.Stag.value
+                stag.append((i,j))
+                break
+        while True:
+            i = randint(1, size - 1)
+            j = randint(1, size - 1)
+            if board[i, j] == constants.Item.Passage.value:
+                board[i, j] = constants.Item.Hare.value
+                hare.append((i, j))
+                break
+
+        return board, agents, stag, hare
 
     assert (num_rigid % 2 == 0)
     assert (num_wood % 2 == 0)
-    board, agents = make(size, num_rigid, num_wood, num_agents)
+    board, agents, stag, hare = make(size, num_rigid, num_wood, num_agents)
 
     # Make sure it's possible to reach most of the passages.
     while len(inaccessible_passages(board, agents)) > 4:
-        board, agents = make(size, num_rigid, num_wood, num_agents)
+        board, agents, stag, hare = make(size, num_rigid, num_wood, num_agents)
 
     return board
 
@@ -241,7 +261,7 @@ def position_is_flames(board, position):
 
 def position_is_bomb(bombs, position):
     """Check if a given position is a bomb.
-    
+
     We don't check the board because that is an unreliable source. An agent
     may be obscuring the bomb on the board.
     """
