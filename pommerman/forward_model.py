@@ -483,6 +483,35 @@ class ForwardModel(object):
             else:
                 curr_board[agent.position] = utility.agent_value(agent.agent_id)
 
+        def got_animals():
+            # TODO: "Kill" all agents when someone gets the stag/hare
+            # MAYBE ACTUALLY HAVE TO UPDATE THE CURR_AGENTS?
+            got_hare = []
+            got_stag = []
+            for agent in alive_agents:
+                if curr_board[agent.position] == constants.Item.Hare.value:
+                    got_hare.append(True)
+                else:
+                    got_hare.append(False)
+                if curr_board[agent.position] == constants.Item.Stag.value:
+                    got_stag.append(True)
+                else:
+                    got_stag.append(False)
+
+            for i in range(0, len(got_hare)):
+                if sum(got_stag) > 1:
+                    # two players got the stag and the other agents die, and the game ends
+                    for agent_i in range(0,len(alive_agents)):
+                        agent = alive_agents[agent_i]
+                        if got_stag[agent_i] == False:
+                            alive_agents[agent_i].die()
+                elif sum(got_hare) > 0:
+                    # one player got the hare and the other agents die, and the game ends
+                    for agent_i in range(0, len(alive_agents)):
+                        agent = alive_agents[agent_i]
+                        if got_hare[agent_i] == False:
+                            alive_agents[agent_i].die()
+
         return curr_board, curr_agents, curr_bombs, curr_items, curr_flames
 
     def get_observations(self, curr_board, agents, bombs, flames,
@@ -592,17 +621,25 @@ class ForwardModel(object):
         if game_type == constants.GameType.FFA or game_type == constants.GameType.OneVsOne:
             alive = [agent for agent in agents if agent.is_alive]
             if done:
-                if len(alive) != 1:
-                    # Either we have more than 1 alive (reached max steps) or
-                    # we have 0 alive (last agents died at the same time).
-                    return {
-                        'result': constants.Result.Tie,
-                    }
-                else:
+                if len(alive) > 2:
+                    # Either we have more than 2 alive (reached max steps)
+                    return {'result': constants.Result.Tie}
+                elif len(alive) == 2:
+                    # if there are two alive, that means that those two people got the stag
+                    # TODO: might have to change the reward structure
+                    return {'result': constants.Result.Win,
+                            'winners': [num for num, reward in enumerate(rewards) \
+                                        if reward == 1]}
+                elif len(alive) == 1:
+                    # If there is one person alive, then that one person got the hare
                     return {
                         'result': constants.Result.Win,
                         'winners': [num for num, reward in enumerate(rewards) \
-                                    if reward == 1]
+                                    if reward == 1]}
+                elif len(alive) == 0:
+                    # we have 0 alive (last agents died at the same time).
+                    return {
+                        'result': constants.Result.Tie,
                     }
             else:
                 return {

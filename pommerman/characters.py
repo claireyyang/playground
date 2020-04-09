@@ -186,3 +186,12 @@ class Stag(object):
 
     def to_json(self):
         return{"position": self.position}
+
+def Hare(object):
+    """Container for Hare"""
+
+    def __init__(self, position):
+        self.position = position
+
+    def to_json(self):
+        return{"position": self.position}

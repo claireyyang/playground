@@ -41,7 +41,7 @@ FILE_NAMES = [
     'Agent2-No-Background', 'Agent3-No-Background', 'X-No-Background',
     'Agent0-Team', 'Agent1-Team', 'Agent2-Team', 'Agent3-Team',
     'Agent0-Team-No-Background', 'Agent1-Team-No-Background',
-    'Agent2-Team-No-Background', 'Agent3-Team-No-Background',
+    'Agent2-Team-No-Background', 'Agent3-Team-No-Background', 'Stag', 'Hare'
 ]
 
 IMAGES_DICT = {
@@ -86,16 +86,6 @@ class Item(Enum):
     AgentDummy is used by team games to denote the third enemy and by ffa to
     denote the teammate.
     """
-    # Passage = 0
-    # Rigid = 1
-    # Bomb = 2
-    # AgentDummy = 3
-    # Agent0 = 4
-    # Agent1 = 5
-    # Agent2 = 6
-    # Agent3 = 7
-    # Stag = 8
-    # Hare = 9
 
     Passage = 0
     Rigid = 1
@@ -140,6 +130,7 @@ class Action(Enum):
     Left = 3
     Right = 4
     Bomb = 5 # DROP BOMB
+    Altruism = 6 # add this in
 
 
 class Result(Enum):

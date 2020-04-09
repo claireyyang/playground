@@ -144,7 +144,7 @@ def make_board(size, num_rigid=0, num_wood=0, num_agents=4):
 
         stag = []
         hare = []
-        # Put down the stag and hare RANDOMLY ON ANY SPACE?
+        # TODO: Put down the stag and hare RANDOMLY ON ANY SPACE
         while True:
             i = randint(1, size-1)
             j = randint(1, size-1)
@@ -346,6 +346,13 @@ def position_on_board(board, position):
     x, y = position
     return all([len(board) > x, len(board[0]) > y, x >= 0, y >= 0])
 
+def position_is_stag(board, position):
+    """Determines if a position is stag"""
+    return _position_is_item(board, position, constants.Item.Stag)
+
+def position_is_hare(board, position):
+    """Determines if a position is hare"""
+    return _position_is_item(board, position, constants.Item.Hare)
 
 def get_direction(position, next_position):
     """Get the direction such that position --> next_position.

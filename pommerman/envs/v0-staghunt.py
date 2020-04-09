@@ -86,6 +86,7 @@ class Pomme(gym.Env):
         - teammate (one of {AgentDummy.value, Agent3.value}).
         - enemies (three of {AgentDummy.value, Agent3.value}).
         """
+        #TODO: change this!!
         bss = self._board_size**2
         min_obs = [0] * 3 * bss + [0] * 5 + [constants.Item.AgentDummy.value] * 4
         max_obs = [len(constants.Item)] * bss + [self._board_size] * bss + [25] * bss

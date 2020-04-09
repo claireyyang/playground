@@ -370,7 +370,7 @@ class PommeViewer(Viewer):
         dead.width = image_size
         dead.height = image_size
         sprites = []
-        
+
         if self._game_type is constants.GameType.FFA or self._game_type is constants.GameType.OneVsOne:
             agents = self._agents
         else:
@@ -379,10 +379,10 @@ class PommeViewer(Viewer):
         for index, agent in enumerate(agents):
             # weird math to make sure the alignment
             # is correct. 'image_size + spacing' is an offset
-            # that includes padding (spacing) for each image. 
+            # that includes padding (spacing) for each image.
             # '4 - index' is used to space each agent out based
             # on where they are in the array based off of their
-            # index. 
+            # index.
             x = self.board_right() - (len(agents) - index) * (
                 image_size + spacing)
             y = board_top
